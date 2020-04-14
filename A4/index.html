@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>A4</title>
+	<script src="../vue.js"></script>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+	<div id="exercise">
+		<p>{{width + 'px'}}</p>
+		<!-- 1) Start the Effect with the Button. The Effect should alternate the "highlight" or "shrink" class on each new setInterval tick (attach respective class to the div with id "effect" below) -->
+		<div>
+			<button @click="startEffect">Start Effect</button>
+			<div id="effect" :class="effectClasses"></div>
+		</div>
+		<!-- 2) Create a couple of CSS classes and attach them via the array syntax -->
+		<div :class="['red', text]">I got no class :(</div>
+		<!-- 3) Let the user enter a class (create some example classes) and attach it -->
+		<div :class="whichOne">
+			<input type="text" v-model="whichOne">
+			<div></div>
+		</div>
+		<!-- 4) Let the user enter a class and enter true/ false for another class (create some example classes) and attach the classes -->
+		<div :class="[whichTwo, mine]">
+			<input type="text" v-model="whichTwo">
+			<input type="text" v-model="whichThree">
+			<div></div>
+		</div>
+		<!-- 5) Repeat 3) but now with values for styles (instead of class names). Attach the respective styles.  -->
+		<div :style="chooseColor">
+			<input type="text" v-model="color">
+			<div></div>
+		</div>
+		<!-- 6) Create a simple progress bar with setInterval and style bindings. Start it by hitting the below button. -->
+		<div>
+			<button @click="widthIncrease">Start Progress</button>
+			<div class="progress-bar" :style="progressBar"></div>
+		</div>
+	</div>
+
+	<script>
+		new Vue({
+			el: "#exercise",
+			data: {
+				change: false,
+				text: "small",
+				whichOne: "",
+				whichTwo: "",
+				whichThree: "",
+				color: "",
+				width: 0,
+			},
+			computed: {
+				effectClasses() {
+					return {
+						highlight: this.change,
+						shrink: !this.change
+					}
+				},
+				mine() {
+					return {
+						special: this.whichThree == "true"
+					}
+				},
+				chooseColor() {
+					return { backgroundColor: this.color }
+				},
+				progressBar() {
+					return {
+						width: this.width + "px",
+						backgroundColor: "red"
+					}
+				}
+			},
+			methods: {
+				startEffect() {
+					var vm = this;
+					setInterval(function () {
+						vm.change = !vm.change
+					}, 1000)
+				},
+				widthIncrease() {
+					var vm = this;
+					var id = setInterval(function () {
+						if (vm.width == 200) {
+							clearInterval(id)
+						} else {
+							vm.width++
+						}
+					}, 10)
+				},
+			}
+		})
+	</script>
+
+</body>
+
+</html>
